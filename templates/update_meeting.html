@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+{% block body %}
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议id</label>
+            <div class="layui-input-inline">
+                <input type="text" name="idM" required lay-verify="required" placeholder="请输入会议id" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nameM" required lay-verify="required" placeholder="请输入会议名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+         <div class="layui-form-item">
+            <label class="layui-form-label">会议室名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="meetingroom_name" required lay-verify="required" placeholder="请输入会议室名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input type="date" name="starttime" required lay-verify="required" placeholder="请输入开始时间"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+
+               <input type="date" name="endtime" required lay-verify="required" placeholder="请输入结束时间"
+                       autocomplete="off" class="layui-input">
+
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        //Demo
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

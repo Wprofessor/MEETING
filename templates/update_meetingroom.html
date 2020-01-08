@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% block body %}
+    <form class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议室id</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="idMR" required lay-verify="required" placeholder="请输入会议室id" autocomplete="off"#}
+                {#                       class="layui-input">#}
+                {{ form.mrID(class="layui-input", value=results[0][0]) }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议室名</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="nameMR" required lay-verify="required" placeholder="请输入会议室名"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.mrName(class="layui-input",value=results[0][1]) }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议室容量</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="capacity" required lay-verify="required" placeholder="请输入会议室容量"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.mrCapacity(class="layui-input",value=results[0][2]) }}
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-block">
+                {#                 <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>#}
+                {{ form.mrContent(class="layui-textarea",value=results[0][4]) }}
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                {#                <button class="layui-btn" lay-submit lay-filter="formDemo">立即修改</button>#}
+                {{ form.submit(class="layui-btn") }}
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        //Demo
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+    </script>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
+{% endblock %}

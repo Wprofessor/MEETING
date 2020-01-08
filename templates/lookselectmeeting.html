@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block body %}
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>用户id</th>
+            <th>会议室id</th>
+            <th>会议id</th>
+            <th>会议名</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results_user %}
+            <tr>
+                {% for foo in row %}
+                    {% if foo == '删除' %}
+                        <td><a href="{{ url_for("deleteSelectMeeting",major1ID=row[0],major2ID=row[2]) }}"><p style="color: #01AAED">删除</p>
+                        </a></td>
+                    {% else %}
+                        <td>{{ foo }}</td>
+                    {% endif %}
+
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+{% endblock %}

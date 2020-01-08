@@ -1,0 +1,189 @@
+{% extends "index_user.html" %}
+{% block body %}
+
+    {#    <table id="demo" lay-filter="test"></table>#}
+
+    <form class="layui-form" action="" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">与会人数</label>
+            <div class="layui-input-block">
+                <input type="text" name="num" required lay-verify="required" placeholder="请输入人数"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">投影需要</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="video" value="1" title="是">
+                <input type="radio" name="video" value="0" title="否" checked>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议室大小</label>
+            <div class="layui-input-block">
+                <input type="radio" name="area" value="50" title="50㎡">
+                <input type="radio" name="area" value="100" title="100㎡" checked>
+                <input type="radio" name="area" value="200" title="200㎡">
+                <input type="radio" name="area" value="250" title="250㎡">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">话筒的个数</label>
+            <div class="layui-input-block">
+                <select name="mic_num" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议类型</label>
+            <div class="layui-input-block">
+                <select name="meeting_type" lay-verify="required">
+                    <option value=""></option>
+                    <option value="6">座谈会</option>
+                    <option value="4">团建会议</option>
+                    <option value="5">展销会议</option>
+                    <option value="7">政治会议</option>
+                    <option value="2">商务会议</option>
+                    <option value="0">专题讨论会</option>
+                    <option value="1">产品研讨会</option>
+                    <option value="8">文化交流会</option>
+                    <option value="3">团体定期会</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">会议重要性</label>
+                    <div class="layui-input-inline">
+                        <select name="meeting_need_lel" lay-verify="required">
+                            <option value=""></option>
+                            <option value="1">低重要性</option>
+                            <option value="0">中重要性</option>
+                            <option value="3">高重要性</option>
+                            <option value="2">极高重要性</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">灯光程度</label>
+                    <div class="layui-input-inline">
+                        <select name="meeting_light" lay-verify="required">
+                            <option value=""></option>
+                            <option value="0">正常</option>
+                            <option value="1">明亮</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr class="layui-bg-green">
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>会议室id</th>
+            <th>会议室名</th>
+            <th>会议室容量</th>
+            <th>当前状态</th>
+            <th>说明</th>
+        </tr>
+        </thead>
+        {#        <tbody>#}
+        {#        {% for row in results_user %}#}
+        {#            <tr>#}
+        {#                {% for foo in row %}#}
+        {#                    {% if foo == '删除' or foo == '修改' %}#}
+        {##}
+        {#                        <td>#}
+        {#                            {% if foo == '删除' %}#}
+        {#                                <a href="{{ url_for("deleteMeetingRoom",meetingRoomID=row[0]) }}"><p#}
+        {#                                        style="color: #01AAED">删除</p>#}
+        {#                                </a>#}
+        {#                            {% else %}#}
+        {#                                <a href="{{ url_for("updateMeetingRoom",mrid=row[0]) }}"><p#}
+        {#                                        style="color: coral">修改</p>#}
+        {#                                </a>#}
+        {#                            {% endif %}#}
+        {##}
+        {#                        </td>#}
+        {#                    {% else %}#}
+        {#                        <td>{{ foo }}</td>#}
+        {#                    {% endif %}#}
+        {##}
+        {#                {% endfor %}#}
+        {#            </tr>#}
+        {#        {% endfor %}#}
+        {#        </tbody>#}
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+
+
+        <script src="/static/layui/layui.js"></script>
+        <script>
+            //Demo
+            layui.use('form', function () {
+                var form = layui.form;
+
+                //监听提交
+                form.on('submit(formDemo)', function (data) {
+                    layer.msg(JSON.stringify(data.field));
+                    return false;
+                });
+            });
+        </script>
+
+        {#    <script src="/static/layui/layui.js"></script>#}
+        {#    <script>#}
+        {#        layui.use('table', function () {#}
+        {#            var table = layui.table;#}
+        {##}
+        {#            //第一个实例#}
+        {#            table.render({#}
+        {#                elem: '#demo'#}
+        {#                , height: 312#}
+        {#                , url: '/demo/table/user/' //数据接口#}
+        {#                , page: true //开启分页#}
+        {#                , cols: [[ //表头#}
+        {#                    {field: 'meeting_room_id', title: '会议室ID', width: 150, sort: true, fixed: 'left'}#}
+        {#                    , {field: 'meeting_room_name', title: '会议室名字', width: 200}#}
+        {#                    , {field: 'meeting_room_vol', title: '会议室容量', width: 200, sort: true}#}
+        {#                    , {field: 'meeting_room_state', title: '当前状态', width: 200}#}
+        {#                    , {field: 'meeting_room_show', title: '说明', width: 650}#}
+        {#                ]]#}
+        {#            });#}
+        {##}
+        {#        });#}
+        {#        //JavaScript代码区域#}
+        {#    </script>#}
+{% endblock %}

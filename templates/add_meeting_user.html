@@ -1,0 +1,94 @@
+{% extends "index_user.html" %}
+{% block body %}
+    <form class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议id</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="idM" required lay-verify="required" placeholder="请输入会议id" autocomplete="off"#}
+                {#                       class="layui-input">#}
+                {{ form.mID(class="layui-input",placeholder="请输入会议id") }}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议名</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="nameM" required lay-verify="required" placeholder="请输入会议名"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.mName(class="layui-input",placeholder="请输入会议名") }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">预订者id</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="your_name" required lay-verify="required" placeholder="请输入您的姓名"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.resPerson(class="layui-input",placeholder="请输入您的id") }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会议室名</label>
+            <div class="layui-input-inline">
+                {#                <input type="text" name="meetingroom_name" required lay-verify="required" placeholder="请输入会议室名"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.mrName(class="layui-input",placeholder="请输入会议室名") }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                {#                <input type="date" name="starttime" required lay-verify="required" placeholder="请输入开始时间"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.startTime(class="layui-input",placeholder= "输入格式%Y-%m-%d") }}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+
+                {#                <input type="date" name="endtime" required lay-verify="required" ="请输入结束时间"#}
+                {#                       autocomplete="off" class="layui-input">#}
+                {{ form.endTime(class="layui-input",placeholder= "输入格式%Y-%m-%d") }}
+
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-block">
+                {#                <textarea name="desc" class="layui-textarea"></textarea>#}
+                {{ form.mContent(class="layui-textarea" ,placeholder="请输入内容") }}
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                {#                <button class="layui-btn" lay-submit lay-filter="formDemo">立即添加</button>#}
+                {{ form.submit( class="layui-btn") }}
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        //Demo
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+    </script>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
+{% endblock %}

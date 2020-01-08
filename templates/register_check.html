@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% block body %}
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>sex</th>
+            <th>目的</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results_user %}
+            <tr>
+                {% for foo in row %}
+                    {% if foo == '同意' %}
+                        <td><a href="{{ url_for("addUser",user_ID=row[0]) }}"><p style="color: #01AAED">同意</p></a></td>
+                    {% else %}
+                        <td>{{ foo }}</td>
+                    {% endif %}
+
+                {% endfor %}
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
+{% endblock %}

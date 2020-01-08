@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% block body %}
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>会议室id</th>
+            <th>会议室名</th>
+            <th>会议室容量</th>
+            <th>当前状态</th>
+            <th>说明</th>
+            <th>   </th>
+            <th>   </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results_user %}
+            <tr>
+                {% for foo in row %}
+                    {% if foo == '删除' or foo == '修改' %}
+
+                        <td>
+                            {% if foo == '删除' %}
+                                <a href="{{ url_for("deleteMeetingRoom",meetingRoomID=row[0]) }}"><p
+                                        style="color: #01AAED">删除</p>
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for("updateMeetingRoom",mrid=row[0]) }}"><p
+                                        style="color: coral">修改</p>
+                                </a>
+                            {% endif %}
+
+                        </td>
+                    {% else %}
+                        <td>{{ foo }}</td>
+                    {% endif %}
+
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+        {#    <tr>#}
+        {#      <td><a href=""/> 贤心</td>#}
+        {#      <td>2016-11-29</td>#}
+        {#      <td>人生就像是一场修行</td>#}
+        {#    </tr>#}
+        {#    <tr>#}
+        {#      <td>许闲心</td>#}
+        {#      <td>2016-11-28</td>#}
+        {#      <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>#}
+        {#    </tr>#}
+        </tbody>
+    </table>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
+{% endblock %}

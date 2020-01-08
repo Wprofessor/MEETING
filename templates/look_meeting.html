@@ -1,0 +1,64 @@
+{% extends "index.html" %}
+{% block body %}
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>会议id</th>
+            <th>会议名</th>
+            <th>预订人id</th>
+            <th>会议室名</th>
+            <th>当前人数</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>说明</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results_user %}
+            <tr>
+                {% for foo in row %}
+                      {% if foo == '删除' or foo == '参与' %}
+
+                        <td>
+                            {% if foo == '删除' %}
+                                <a href="{{ url_for("deleteMeeting",meetingID=row[0]) }}"><p
+                                        style="color: #01AAED">删除</p>
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for("joinMeeting",mID=row[0],userID=row[2]) }}"><p
+                                        style="color: coral">参与</p>
+                                </a>
+                            {% endif %}
+
+                        </td>
+                    {% else %}
+                        <td>{{ foo }}</td>
+                    {% endif %}
+
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        {#            <tr>#}
+        {#              <td><a href=""/> 贤心</td>#}
+        {#              <td>2016-11-29</td>#}
+        {#              <td>人生就像是一场修行</td>#}
+        {#            </tr>#}
+        {#            <tr>#}
+        {#              <td>许闲心</td>#}
+        {#              <td>2016-11-28</td>#}
+        {#              <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>#}
+        {#            </tr>#}
+        </tbody>
+    </table>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
+{% endblock %}

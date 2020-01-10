@@ -13,8 +13,6 @@
         <div class="layui-form-item">
             <label class="layui-form-label">旧密码</label>
             <div class="layui-input-inline">
-                {#                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"#}
-                {#                       autocomplete="off" class="layui-input">#}
                 {{ userForm.password( class="layui-input",placeholder="请输入密码") }}
 
             </div>
@@ -23,8 +21,6 @@
         <div class="layui-form-item">
             <label class="layui-form-label">新密码</label>
             <div class="layui-input-inline">
-                {#                <input type="password" name="password1" required lay-verify="required" placeholder="请输入密码"#}
-                {#                       autocomplete="off" class="layui-input">#}
                 {{ userForm.password1( class="layui-input",placeholder="请输入新密码") }}
             </div>
             <div class="layui-form-mid layui-word-aux">大于6个字符</div>
@@ -33,23 +29,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
-                {#                <input type="text" name="phone" required lay-verify="required" placeholder="请输入联系方式"#}
-                {#                       autocomplete="off" class="layui-input">#}
                 {{ userForm.contact( class="layui-input",placeholder="请输入联系方式") }}
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">性别</label>
-            {#            <div class="layui-input-inline">#}
-            {##}
-            {#                <input type="text" name="sex" required lay-verify="required" placeholder="请输入性别"#}
-            {#                       autocomplete="off" class="layui-input">#}
-            {##}
-            {#            </div>#}
             <div class="layui-form-radio">
-                {#                <input type="radio" name="sex" value="nan" title="男">#}
-                {#                <input type="radio" name="sex" value="nv" title="女" checked>#}
                 {{ userForm.sex(class="layui-input-block") }}
 
             </div>
@@ -59,12 +45,6 @@
         <div class="layui-form-item">
             <label class="layui-form-label">部门</label>
             <div class="layui-input-block">
-                {#                <select name="department" lay-filter="job">#}
-                {#                    <option value="0">人力资源部</option>#}
-                {#                    <option value="1">企划部</option>#}
-                {#                    <option value="2">市场部</option>#}
-                {#                    <option value="3">财务部</option>#}
-                {#                </select>#}
                 {{ userForm.departmentSelect(class="layui-input-block") }}
             </div>
         </div>

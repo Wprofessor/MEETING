@@ -118,32 +118,16 @@
             <th>说明</th>
         </tr>
         </thead>
-        {#        <tbody>#}
-        {#        {% for row in results_user %}#}
-        {#            <tr>#}
-        {#                {% for foo in row %}#}
-        {#                    {% if foo == '删除' or foo == '修改' %}#}
-        {##}
-        {#                        <td>#}
-        {#                            {% if foo == '删除' %}#}
-        {#                                <a href="{{ url_for("deleteMeetingRoom",meetingRoomID=row[0]) }}"><p#}
-        {#                                        style="color: #01AAED">删除</p>#}
-        {#                                </a>#}
-        {#                            {% else %}#}
-        {#                                <a href="{{ url_for("updateMeetingRoom",mrid=row[0]) }}"><p#}
-        {#                                        style="color: coral">修改</p>#}
-        {#                                </a>#}
-        {#                            {% endif %}#}
-        {##}
-        {#                        </td>#}
-        {#                    {% else %}#}
-        {#                        <td>{{ foo }}</td>#}
-        {#                    {% endif %}#}
-        {##}
-        {#                {% endfor %}#}
-        {#            </tr>#}
-        {#        {% endfor %}#}
-        {#        </tbody>#}
+         <tbody>
+    {% for row in real_result %}
+    <tr>
+        {% for foo in row %}
+        <td>{{ foo }}</td>
+
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}

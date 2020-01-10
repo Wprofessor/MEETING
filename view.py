@@ -56,7 +56,6 @@ def myMeeting():
         ID = cursor.fetchall()[0][0]
 
         result = db.query.myMeeting(ID)
-        print(result)
         print(result, ID, session.get('account'))
     except:
         flash('数据库异常')
@@ -136,6 +135,7 @@ def registerAndCheck():
     return render_template('register_check.html', results_user=results_user, name=session.get('name'))
 
 
+# 添加用户
 @view.route('/register_check/<user_ID>/', methods=['GET', 'POST'])
 def addUser(user_ID):
     print(user_ID)
@@ -178,6 +178,7 @@ def searchUser():
     return render_template('search_user.html', results_user=results_user, name=session.get('name'))
 
 
+# 删除用户
 @view.route('/search_user/<searchUserID>/', methods=['GET', 'POST'])
 def deleteUser(searchUserID):
     print(searchUserID)
@@ -236,7 +237,7 @@ def deleteMeetingRoom(meetingRoomID):
         cursor.execute(sql1)
         result = cursor.fetchall()
         if result:
-            flash('此会议被预定，删除失败')
+            flash('此会议室被预定，删除失败')
         else:
             sql1 = 'delete from 会议室 where 会议室id=' + meetingRoomID + ';'
             try:
@@ -244,6 +245,7 @@ def deleteMeetingRoom(meetingRoomID):
                 conn.commit()
                 flash('删除成功')
             except:
+                conn.rollback()
                 flash('删除异常')
     except:
         flash('数据库异常，删除失败')
@@ -309,6 +311,35 @@ def lookMeeting():
         tump.append('参与')
         tump.append('删除')
         results_user.append(tump)
+
+    conn = pymysql.connect(host="127.0.0.1", user="wprofessor", password="Aa*123456", database="DBMeeting",
+                           charset="utf8")
+    cursor = conn.cursor()
+
+    for row in results_user:
+        print(row)
+        if row[6] < todayDate:
+            sql = 'delete from 会议  where 会议id=%s' + ';'
+            sql1 = 'delete from 选会议表 where 会议id=%s' + ';'
+
+            try:
+                cursor.execute(sql1, row[0])
+                conn.commit()
+                flash('删除成功')
+            except:
+                flash('数据库异常')
+                conn.rollback()
+            try:
+                cursor.execute(sql, row[0])
+                conn.commit()
+
+            except:
+                flash('数据库异常')
+                conn.rollback()
+
+    cursor.close()
+    conn.close()
+
     if session.get('account') == '111111':
         return render_template('look_meeting.html', results_user=results_user, name=session.get('name'))
     else:
@@ -324,23 +355,29 @@ def joinMeeting(mID, userID):
     cursor = conn.cursor()
     sql = 'select * from 会议 where 会议id = ' + mID + ' and 预订者id = ' + userID + ';'
     try:
+        sql1 = 'select 用户id from 用户 where 账号 =  ' + session.get('account') + ';'
+        cursor.execute(sql1)
+        userid = cursor.fetchall()[0][0]
         cursor.execute(sql)
         results = cursor.fetchall()
         print(results)
         sql1 = 'select 会议室容量 from 会议室 where 会议室id = %s' + ';'
+        sql2 = 'select * from 选会议表 where 用户id = %s and 会议id = %s' + ';'
         cursor.execute(sql1, results[0][3])
         result_c_m = cursor.fetchall()
+        cursor.execute(sql2,[userid,mID])
+        result_exist = cursor.fetchall()
+        print('===========================================================')
+        print(result_exist)
         capacity = result_c_m[0][0]
 
         print(capacity)
         if results[0][4] >= capacity:
             flash('会议人数已满，拒绝参与')
+        elif result_exist:
+            flash('会议已参加，请勿重返参加，给别人也留点机会，做人留一线，日后好想见！！！')
         else:
-            print(session.get('account'))
-            sql1 = 'select 用户id from 用户 where 账号 =  ' + session.get('account') + ';'
-            cursor.execute(sql1)
-            userid = cursor.fetchall()[0][0]
-            print(userid)
+
             sql1 = 'insert into 选会议表(用户id,会议室id,会议id,会议名) values(%s,%s,%s,%s);'
             try:
                 cursor.execute(sql1, [userid, results[0][3], mID, results[0][1]])
@@ -508,19 +545,31 @@ def deleteSelectMeeting(major1ID, major2ID):
     conn = pymysql.connect(host="127.0.0.1", user="wprofessor", password="Aa*123456", database="DBMeeting",
                            charset="utf8")
     cursor = conn.cursor()
-    sql = 'delete from 选会议表 where 用户id=' + major1ID + ' and 会议id=' + major2ID + ';'
-    sql1 = 'update 会议 set 当前人数=当前人数-' + '1' + ' where 会议id=' + major2ID + ';'
+    sql0 = 'select 开始时间 from 会议 where 会议id=' + major2ID + ';'
     try:
-        print(sql)
-        cursor.execute(sql)
-        cursor.execute(sql1)
-        conn.commit()
-        flash('删除成功')
+        cursor.execute(sql0)
+        result = cursor.fetchall()
+        if result[0][0] < todayDate:
+            flash('会议正在进行，不能删除')
+        else:
+            sql = 'delete from 选会议表 where 用户id=' + major1ID + ' and 会议id=' + major2ID + ';'
+            sql1 = 'update 会议 set 当前人数=当前人数-' + '1' + ' where 会议id=' + major2ID + ';'
+            try:
+                print(sql)
+                cursor.execute(sql)
+                cursor.execute(sql1)
+                conn.commit()
+                flash('删除成功')
+            except:
+                flash('数据库异常')
+                conn.rollback()
+                cursor.close()
+                conn.close()
     except:
         flash('数据库异常')
-        conn.rollback()
-    cursor.close()
-    conn.close()
+        cursor.close()
+        conn.close()
+
     return redirect(url_for('lookSelectMeeting'))
 
 
@@ -567,9 +616,22 @@ def login():
     return render_template('Login.html')
 
 
+class User:
+    username = ""
+    password = ""
+    password_check = ""
+    name = ""
+    id = 0
+    sex = ""
+    part = ""
+    tel = ""
+    goal = ""
+
+
 @view.route('/sign_in', methods=['GET', 'POST'])
 def index2():
     if request.method == 'POST':
+        # 获取表单数据
         # 获取表单数据
         username = request.form.get('username1')
         password1 = request.form.get('pass1')
@@ -737,7 +799,10 @@ def recommendMR():
         for temp in result:
             cursor.execute(sql, temp)
             real_result.append(cursor.fetchall()[0])
-    return render_template('mrr.html', name=session.get('name'), real_result=real_result)
+    if session.get('account') == '111111':
+        return render_template('mrr.html', name=session.get('name'), real_result=real_result)
+    else:
+        return render_template('mrr_user.html', name=session.get('name'), real_result=real_result)
 
 
 if __name__ == '__main__':

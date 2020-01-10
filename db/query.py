@@ -4,8 +4,6 @@ import time
 todayDate = time.strftime("%Y-%m-%d", time.localtime())
 
 
-
-
 # 查询用户
 def selectUser():
     conn = pymysql.connect(host="127.0.0.1", user="wprofessor", password="Aa*123456", database="DBMeeting",
@@ -105,12 +103,15 @@ def loolMeeting():
     conn = pymysql.connect(host="127.0.0.1", user="wprofessor", password="Aa*123456", database="DBMeeting",
                            charset="utf8")
     cursor = conn.cursor()
-    sql = 'delete from 会议 where 结束时间 <' + todayDate + ';'
-    try:
-        cursor.execute(sql)
-        conn.commit()
-    except:
-        conn.rollback()
+
+    # sql = 'delete from 会议 where 结束时间 < %s' + ';'
+    # try:
+    #     print(sql)
+    #     cursor.execute(sql, todayDate)
+    #     conn.commit()
+    # except:
+    #     print('删除失败')
+    #     conn.rollback()
     sql = 'select * from 会议;'
     try:
         cursor.execute(sql)
